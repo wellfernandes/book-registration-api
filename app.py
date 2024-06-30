@@ -1,12 +1,14 @@
 from flask import Flask
+from flask_migrate import Migrate
+from db import db
 
 app = Flask(__name__)
 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@db:5432/book'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-@app.route('/hello')
-def hello():
-    return 'API is live!'
-
+db.init_app(app)
+migrate = Migrate(app, db)
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080, host='0.0.0.0')
